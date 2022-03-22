@@ -1,0 +1,146 @@
+---
+title: "Statistics"
+output: html_notebook
+---
+
+# Mode
+
+```{r}
+x <- c(10,10,10,20,20,30,30,40,50)
+
+# table back the frequency of each elements in vector
+y <- table(x)
+
+as.numeric(names(y)[which.max(y)])
+
+```
+
+# Range
+
+```{r}
+x <- c(7,4,11,8,19)
+range(x)
+
+# the difference between Max value & Min value
+diff(range(x))
+```
+
+# Variance & Standard Deviation
+
+```{r}
+x <- c(7,4,11,8,19)
+sd(x)
+
+var(x)
+```
+
+# MAD (Median Absolute Deviation)
+
+```{r}
+x <- c(7,4,11,8,19)
+mad(x, constant = 1)
+```
+
+# Normal Distribution
+
+### Shapiro test & P-value
+
+```{r}
+set.seed(10)
+x1 <- rnorm(1000) # 1000 values from standard normal distribution
+x2 <- runif(1000) # 1000 values from uniform distribution
+x3 <- rgamma(1000,2,1) # 1000 values from gamma distribution
+x4 <- c(rep(3,10),1,2,4,5) # Leptokutric distribution
+
+hist(x1, main = 'standard normal distribution')
+hist(x2, main = 'uniform distribution')
+hist(x3, main = ' gamma distribution')
+hist(x4, main = 'Leptokutric distribution')
+```
+
+```{r}
+# Normal Distribution when Pvalue > 0.05
+shapiro.test(x1)$p.value # large p_value follow normal distribution
+
+shapiro.test(x2)$p.value
+shapiro.test(x3)$p.value
+shapiro.test(x4)$p.value
+```
+
+# A- Single Sample
+
+### 1- t_test
+
+-   if your single sample is normally distributed
+
+```{r}
+scores <- c(1370,1290,1250,1320,1250,1370,1340,1330,1280,1210,1390,1180,1290,1300,1300,1250,1250,1310,1360)
+
+your.score <- 1330
+
+# to test if normally distributed by Shapiro-wilk test
+shapiro.test(scores)
+```
+
+```{r}
+# t-test because p-value > 0.05
+# I don't care about the direction of differency SO "two.sided"
+# compare x to mu to get to reject the NUll hypothesis or not
+t.test(x=scores, mu=your.score, alternative = "two.sided")
+
+# p_value < 0.05 => SO my_score is significant
+```
+
+```{r}
+# if we need to get the direction hypothesis // if my_score is higher or lower to my colleges
+t.test(x=scores, mu=your.score, alternative = "less")
+```
+
+```{r}
+t.test(x=scores, mu=your.score, alternative = "greater")
+```
+
+-   if the single data not normally distributed
+
+    ```{r}
+    score2 <- c(1340,1540,1310,1270,1340,1300,1330,1540,1540,1320)
+
+    your.score2 <- 1300
+
+    shapiro.test(score2)
+    ```
+
+-   so we go to Wilicoxon test
+
+    ### 2- Wilicoxon test
+
+    ```{r}
+    wilcox.test(score2, mu=your.score2, alternative = "two.sided")
+    ```
+
+# B- Two groups
+
+-   1- sample are paired =\> like the same subject but 2 different samples (Healthy & cancer) OR 2 conditions (before and after TTT)
+
+-   2- samples are independent
+
+    ### 1- Paired 2 samples
+
+    -   check the normal distribution on paired difference (group A - group B = paired difference) by Shapiro-wilk normality test
+
+        ```{r}
+        set.seed(10)
+        before = rnorm(100)
+        set.seed(20)
+        after = rnorm(100, mean = 2)
+
+        d = after - before
+
+        shapiro.test(d)
+        ```
+
+-   p-value of shapiro.test \> 0.05 // so we use t-test
+
+    ```{r}
+    t.test(after,before,paired = TRUE, alternative = 'two.sided')
+    ```

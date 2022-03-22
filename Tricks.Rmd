@@ -1,0 +1,33 @@
+---
+title: "R for datascience book"
+output: html_notebook
+---
+
+# Pipes with magrittr
+
+```{r}
+library(magrittr)
+```
+
+```{r}
+foo_foo <- little_bunny()
+
+foo_foo_1 <- hop(foo_foo, through = forest)
+foo_foo_2 <- scoop(foo_foo_1, up = field_mice)
+foo_foo_3 <- bop(foo_foo_2, on = head)
+```
+
+# Return the frequency of each point
+
+```{r}
+x <- c(10,10,10,20,20,30,30,40,50)
+
+# table back the frequency of each elements in vector
+y <- table(x)
+y
+```
+
+```{r}
+# to index the maximum value from table y
+as.numeric(names(y)[which.max(y)])
+```
