@@ -31,3 +31,8 @@ y
 # to index the maximum value from table y
 as.numeric(names(y)[which.max(y)])
 ```
+
+```{r}
+print("Hello. world")
+```
+
