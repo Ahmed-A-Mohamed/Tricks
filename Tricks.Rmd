@@ -32,7 +32,5 @@ y
 as.numeric(names(y)[which.max(y)])
 ```
 
-```{r}
-print("Hello. world")
-```
+
 
